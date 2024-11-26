@@ -5,8 +5,8 @@
 //  Created by Mateusz Ficek on 26/11/2024.
 //
 
-import SwiftUI
 import SwiftData
+import SwiftUI
 
 @main
 struct ResparkApp: App {
@@ -25,7 +25,7 @@ struct ResparkApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            OnboardingView()
         }
         .modelContainer(sharedModelContainer)
     }
