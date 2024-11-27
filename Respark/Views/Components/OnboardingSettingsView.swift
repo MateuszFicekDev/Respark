@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct OnboardingSettingsView: View {
-    @State var workTimeMinutes: Int = 25
-    @State var longBreakTimeMinutes: Int = 10
-    @State var shortBreakTimeMinutes: Int = 5
+    @State var workTimeMinutes: Int = UserPreferences.shared.getWorkDuration()
+    @State var longBreakTimeMinutes: Int = UserPreferences.shared.getLongBreakDuration()
+    @State var shortBreakTimeMinutes: Int = UserPreferences.shared.getShortBreakDuration()
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -24,9 +24,27 @@ struct OnboardingSettingsView: View {
             PreferenceView(time: $workTimeMinutes, description: "Work time (minutes):")
             PreferenceView(time: $longBreakTimeMinutes, description: "Long break (minutes):")
             PreferenceView(time: $shortBreakTimeMinutes, description: "Short break (minutes):")
+
+            HStack {
+                Spacer()
+                Image(systemName: "chevron.down.2")
+                    .resizable()
+                    .frame(width: 32, height: 32)
+                Spacer()
+            }
         }
         .padding(.vertical, 64)
         .padding(.horizontal, 32)
+        .onChange(of: workTimeMinutes) {
+            _, _ in
+            UserPreferences.shared.saveTimeSettings(workDuration: workTimeMinutes, shortBreakDuration: shortBreakTimeMinutes, longBreakDuration: longBreakTimeMinutes)
+        }.onChange(of: longBreakTimeMinutes) {
+            _, _ in
+            UserPreferences.shared.saveTimeSettings(workDuration: workTimeMinutes, shortBreakDuration: shortBreakTimeMinutes, longBreakDuration: longBreakTimeMinutes)
+        }.onChange(of: shortBreakTimeMinutes) {
+            _, _ in
+            UserPreferences.shared.saveTimeSettings(workDuration: workTimeMinutes, shortBreakDuration: shortBreakTimeMinutes, longBreakDuration: longBreakTimeMinutes)
+        }
     }
 }
 

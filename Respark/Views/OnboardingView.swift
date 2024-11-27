@@ -18,21 +18,35 @@ struct OnboardingView: View {
                 VStack {
                     IntroductionView()
                         .frame(height: UIScreen.main.bounds.height)
-
                     OnboardingSettingsView()
+                        .frame(height: UIScreen.main.bounds.height)
+                    AutomationSettingsView()
+                        .frame(height: UIScreen.main.bounds.height)
+                    BreakSettingsView()
                         .frame(height: UIScreen.main.bounds.height)
                 }
             }
             .onScrollPhaseChange { _, _, context in
-                if context.geometry.contentOffset.y > UIScreen.main.bounds.height - 64 {
+                if context.geometry.contentOffset.y == 0 {
+                    withAnimation {
+                        backgroundColor = .primaryOrange
+                    }
+                } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height {
                     withAnimation {
                         backgroundColor = .primaryBlue
-                        didPresentIntroduction = true
+                    }
+                } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height * 2 {
+                    withAnimation {
+                        backgroundColor = .primaryYellow
+                    }
+                } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height * 3 {
+                    withAnimation {
+                        backgroundColor = .primaryBackground
                     }
                 }
             }
             .scrollTargetBehavior(.paging)
-            .scrollDisabled(didPresentIntroduction)
+            .scrollDisabled(false)
         }
         .ignoresSafeArea()
     }
