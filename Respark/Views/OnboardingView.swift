@@ -27,20 +27,17 @@ struct OnboardingView: View {
                 }
             }
             .onScrollPhaseChange { _, _, context in
-                if context.geometry.contentOffset.y == 0 {
-                    withAnimation {
+                withAnimation {
+                    if context.geometry.contentOffset.y == 0 {
                         backgroundColor = .primaryOrange
-                    }
-                } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height {
-                    withAnimation {
+
+                    } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height {
                         backgroundColor = .primaryBlue
-                    }
-                } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height * 2 {
-                    withAnimation {
-                        backgroundColor = .primaryYellow
-                    }
-                } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height * 3 {
-                    withAnimation {
+
+                    } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height * 2 {
+                        backgroundColor = .primaryGreen
+
+                    } else if context.geometry.contentOffset.y == UIScreen.main.bounds.height * 3 {
                         backgroundColor = .primaryBackground
                     }
                 }

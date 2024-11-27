@@ -31,7 +31,7 @@ struct AutomationSettingsView: View {
             )
             .foregroundStyle(.black)
             .toggleStyle(.button)
-            .tint(.primaryOrange)
+            .tint(.primaryBackground)
             .padding(.bottom, 12)
             .contentTransition(.identity)
             .onChange(of: isAutoStartEnabled) {

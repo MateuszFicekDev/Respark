@@ -36,7 +36,7 @@ struct BreakSettingsView: View {
                        label: { Text("\(breakCount) cycles") },
                        minimumValueLabel: { Text("1").padding() },
                        maximumValueLabel: { Text("10").padding() })
-                    .tint(breakCount < 5 ? .primaryBlue : breakCount < 8 ? .primaryYellow : .primaryOrange)
+                    .tint(breakCount < 5 ? .primaryBlue : breakCount < 8 ? .primaryGreen : .primaryOrange)
                     .padding()
                     .onChange(of: breakCount) { _, _ in UserPreferences.shared.saveLongBreakInterval(longBreakInterval: breakCount)
                     }
