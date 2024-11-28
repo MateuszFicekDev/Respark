@@ -23,9 +23,11 @@ struct ResparkApp: App {
         }
     }()
 
+    var didFinishOnboarding: Bool = UserPreferences.shared.getFinishedOnboarding()
+
     var body: some Scene {
         WindowGroup {
-            OnboardingView()
+            if didFinishOnboarding { HomeView() } else { OnboardingView() }
         }
         .modelContainer(sharedModelContainer)
     }

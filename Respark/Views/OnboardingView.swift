@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     @State var backgroundColor: Color = .primaryOrange
     @State var didPresentIntroduction: Bool = false
+    @State var navigateToHome: Bool = false
 
     var body: some View {
         ZStack {
@@ -22,7 +23,7 @@ struct OnboardingView: View {
                         .frame(height: UIScreen.main.bounds.height)
                     AutomationSettingsView()
                         .frame(height: UIScreen.main.bounds.height)
-                    BreakSettingsView()
+                    BreakSettingsView(navigateToHome: $navigateToHome)
                         .frame(height: UIScreen.main.bounds.height)
                 }
             }
@@ -43,7 +44,7 @@ struct OnboardingView: View {
                 }
             }
             .scrollTargetBehavior(.paging)
-            .scrollDisabled(false)
+            .scrollDisabled(navigateToHome)
         }
         .ignoresSafeArea()
     }

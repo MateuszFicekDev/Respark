@@ -9,6 +9,7 @@ import SwiftUI
 
 struct BreakSettingsView: View {
     @State var breakCount: Double = UserPreferences.shared.getLongBreakInterval()
+    @Binding var navigateToHome: Bool
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -36,7 +37,7 @@ struct BreakSettingsView: View {
                        label: { Text("\(breakCount) cycles") },
                        minimumValueLabel: { Text("1").padding() },
                        maximumValueLabel: { Text("10").padding() })
-                    .tint(breakCount < 5 ? .primaryBlue : breakCount < 8 ? .primaryGreen : .primaryOrange)
+                    .tint(breakCount < 5 ? .primaryGreen : breakCount < 8 ? .primaryBlue : .primaryOrange)
                     .padding()
                     .onChange(of: breakCount) { _, _ in UserPreferences.shared.saveLongBreakInterval(longBreakInterval: breakCount)
                     }
@@ -44,13 +45,33 @@ struct BreakSettingsView: View {
                 Text("After \(Int(breakCount)) work cycle\(breakCount > 1 ? "s" : "") you will take a longer break.")
                     .fontWeight(.light)
                     .multilineTextAlignment(.center)
+
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        navigateToHome = true
+                        UserPreferences.shared.markOnboardingFinished()
+                    }, label: {
+                        HStack {
+                            Text("Let's Get Started")
+                            Image(systemName: "arrow.forward")
+                        }
+                        .padding()
+                        .frame(width: 200, height: 48)
+                        .background(.primaryFont.opacity(0.05))
+                        .cornerRadius(32)
+                        .shadow(radius: 2)
+                        .foregroundColor(.primaryFont)
+                        .bold()
+                    })
+
+                }.padding(.top, 32)
             }
         }
         .padding(.vertical, 64)
         .padding(.horizontal, 32)
+        .navigate(to: HomeView(), when: $navigateToHome)
     }
 }
 
-#Preview {
-    BreakSettingsView()
-}
+

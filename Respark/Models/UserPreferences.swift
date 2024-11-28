@@ -16,12 +16,14 @@ class UserPreferences {
     private let longBreakDurationKey = "longBreakDuration"
     private let startStagesAutomaticallyKey = "startStagesAutomatically"
     private let longBreakIntervalKey = "longBreakInterval"
+    private let finishedOnboardingKey = "finishedOnboarding"
 
     private let defaultWorkDuration = 25
     private let defaultShortBreakDuration = 5
     private let defaultLongBreakDuration = 15
     private let defualtStartStagesAutomatically = false
     private let defaultLongBreakInterval = 4.0
+    private let defaultFinishedOnboarding = false
     
     func saveTimeSettings(workDuration: Int, shortBreakDuration: Int, longBreakDuration: Int) {
         UserDefaults.standard.set(workDuration, forKey: workDurationKey)
@@ -55,5 +57,13 @@ class UserPreferences {
     
     func getLongBreakInterval() -> Double {
         return UserDefaults.standard.double(forKey: longBreakIntervalKey) == 0.0 ? defaultLongBreakInterval : UserDefaults.standard.double(forKey: longBreakIntervalKey)
+    }
+    
+    func markOnboardingFinished() {
+        UserDefaults.standard.set(true, forKey: finishedOnboardingKey)
+    }
+    
+    func getFinishedOnboarding() -> Bool {
+        return UserDefaults.standard.bool(forKey: finishedOnboardingKey)
     }
 }
