@@ -73,5 +73,3 @@ struct BreakSettingsView: View {
         .navigate(to: HomeView(), when: $navigateToHome)
     }
 }
-
-
