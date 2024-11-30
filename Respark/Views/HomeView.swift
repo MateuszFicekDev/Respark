@@ -12,22 +12,11 @@ struct HomeView: View {
     @State private var timer: Timer? // Reference to the timer
     @StateObject private var cycleManager = CycleManager(workDuration: UserPreferences.shared.getWorkDuration() * 60, shortBreakDuration: UserPreferences.shared.getShortBreakDuration() * 60, longBreakDuration: UserPreferences.shared.getLongBreakDuration() * 60, cyclesBeforeLongBreak: Int(UserPreferences.shared.getLongBreakInterval()))
 
+    @State var progressAmount: Double = 1.00
+
     var body: some View {
         ZStack {
-            LinearGradient(
-                stops: [
-                    .init(color: .primaryBlue, location: 0),
-                    .init(color: .primaryBlue,
-                          location: cycleManager.getRemainingCyclePercentage()),
-                    .init(color: .primaryOrange,
-                          location: cycleManager.getRemainingCyclePercentage()),
-
-                    .init(color: .primaryOrange, location: 1),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            ).ignoresSafeArea()
-                .contentTransition(.identity)
+            PrimaryBackgroundView(progressAmount: progressAmount)
 
             VStack {
                 HStack {
@@ -45,6 +34,7 @@ struct HomeView: View {
                     .multilineTextAlignment(.center)
                     .font(.title)
                     .padding(.horizontal, 48)
+
                 Text(cycleManager.currentPhase.subtitle)
                     .fontWeight(.thin)
 
@@ -70,10 +60,11 @@ struct HomeView: View {
     }
 
     private func startTimer() {
-        withAnimation {
-            isRunning = true
-            timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+        isRunning = true
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            withAnimation(.linear(duration: 1)) {
                 cycleManager.decrementTime()
+                progressAmount = cycleManager.getRemainingCyclePercentage()
             }
         }
     }

@@ -18,6 +18,7 @@ struct MenuButtonView: View {
             Image(systemName: icon)
                 .resizable()
                 .frame(width: width ?? 36, height: height ?? 36)
+                .symbolRenderingMode(.hierarchical)
                 .foregroundColor(.primaryFont)
                 .padding(.horizontal, 36)
                 .padding(.vertical, 24)
@@ -26,5 +27,5 @@ struct MenuButtonView: View {
 }
 
 #Preview {
-    MenuButtonView(icon: "", action: {})
+    MenuButtonView(icon: "star.circle.fill", action: {})
 }
