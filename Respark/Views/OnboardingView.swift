@@ -16,7 +16,7 @@ struct OnboardingView: View {
         ZStack {
             backgroundColor.ignoresSafeArea()
             ScrollView(.vertical, showsIndicators: false) {
-                VStack {
+                VStack(spacing: 0) {
                     IntroductionView()
                         .frame(height: UIScreen.main.bounds.height)
                     OnboardingSettingsView()
@@ -26,6 +26,7 @@ struct OnboardingView: View {
                     BreakSettingsView(navigateToHome: $navigateToHome)
                         .frame(height: UIScreen.main.bounds.height)
                 }
+                .ignoresSafeArea()
             }
             .onScrollPhaseChange { _, _, context in
                 withAnimation {
@@ -47,6 +48,7 @@ struct OnboardingView: View {
             .scrollDisabled(navigateToHome)
         }
         .ignoresSafeArea()
+        .navigate(to: HomeView(), when: $navigateToHome)
     }
 }
 

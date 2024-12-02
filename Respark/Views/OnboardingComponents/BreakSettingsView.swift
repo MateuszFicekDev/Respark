@@ -70,6 +70,5 @@ struct BreakSettingsView: View {
         }
         .padding(.vertical, 64)
         .padding(.horizontal, 32)
-        .navigate(to: HomeView(), when: $navigateToHome)
     }
 }
