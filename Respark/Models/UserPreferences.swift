@@ -11,52 +11,52 @@ class UserPreferences {
     static let shared = UserPreferences()
     private init() {}
 
-    private let workDurationKey = "workDuration"
-    private let shortBreakDurationKey = "shortBreakDuration"
-    private let longBreakDurationKey = "longBreakDuration"
-    private let startStagesAutomaticallyKey = "startStagesAutomatically"
-    private let longBreakIntervalKey = "longBreakInterval"
+    static let workDurationKey = "workDuration"
+    static let shortBreakDurationKey = "shortBreakDuration"
+    static let longBreakDurationKey = "longBreakDuration"
+    static let startStagesAutomaticallyKey = "startStagesAutomatically"
+    static let longBreakIntervalKey = "longBreakInterval"
     private let finishedOnboardingKey = "finishedOnboarding"
 
-    private let defaultWorkDuration = 25
-    private let defaultShortBreakDuration = 5
-    private let defaultLongBreakDuration = 15
+    private let defaultWorkDuration = 2
+    private let defaultShortBreakDuration = 1
+    private let defaultLongBreakDuration = 1
     private let defualtStartStagesAutomatically = false
     private let defaultLongBreakInterval = 4.0
     private let defaultFinishedOnboarding = false
     
     func saveTimeSettings(workDuration: Int, shortBreakDuration: Int, longBreakDuration: Int) {
-        UserDefaults.standard.set(workDuration, forKey: workDurationKey)
-        UserDefaults.standard.set(shortBreakDuration, forKey: shortBreakDurationKey)
-        UserDefaults.standard.set(longBreakDuration, forKey: longBreakDurationKey)
+        UserDefaults.standard.set(workDuration, forKey: UserPreferences.workDurationKey)
+        UserDefaults.standard.set(shortBreakDuration, forKey: UserPreferences.shortBreakDurationKey)
+        UserDefaults.standard.set(longBreakDuration, forKey: UserPreferences.longBreakDurationKey)
     }
     
     func saveAutomationSettings(startStagesAutomatically: Bool) {
-        UserDefaults.standard.set(startStagesAutomatically, forKey: startStagesAutomaticallyKey)
+        UserDefaults.standard.set(startStagesAutomatically, forKey: UserPreferences.startStagesAutomaticallyKey)
     }
     
     func saveLongBreakInterval(longBreakInterval: Double) {
-        UserDefaults.standard.set(longBreakInterval, forKey: longBreakIntervalKey)
+        UserDefaults.standard.set(longBreakInterval, forKey: UserPreferences.longBreakIntervalKey)
     }
     
     func getWorkDuration() -> Int {
-        return UserDefaults.standard.integer(forKey: workDurationKey) == 0 ? defaultWorkDuration : UserDefaults.standard.integer(forKey: workDurationKey)
+        return UserDefaults.standard.integer(forKey: UserPreferences.workDurationKey) == 0 ? defaultWorkDuration : UserDefaults.standard.integer(forKey: UserPreferences.workDurationKey)
     }
     
     func getShortBreakDuration() -> Int {
-        return UserDefaults.standard.integer(forKey: shortBreakDurationKey) == 0 ? defaultShortBreakDuration : UserDefaults.standard.integer(forKey: shortBreakDurationKey)
+        return UserDefaults.standard.integer(forKey: UserPreferences.shortBreakDurationKey) == 0 ? defaultShortBreakDuration : UserDefaults.standard.integer(forKey: UserPreferences.shortBreakDurationKey)
     }
     
     func getLongBreakDuration() -> Int {
-        return UserDefaults.standard.integer(forKey: longBreakDurationKey) == 0 ? defaultLongBreakDuration : UserDefaults.standard.integer(forKey: longBreakDurationKey)
+        return UserDefaults.standard.integer(forKey: UserPreferences.longBreakDurationKey) == 0 ? defaultLongBreakDuration : UserDefaults.standard.integer(forKey: UserPreferences.longBreakDurationKey)
     }
     
     func getStartStagesAutomatically() -> Bool {
-        return UserDefaults.standard.bool(forKey: startStagesAutomaticallyKey)
+        return UserDefaults.standard.bool(forKey: UserPreferences.startStagesAutomaticallyKey)
     }
     
     func getLongBreakInterval() -> Double {
-        return UserDefaults.standard.double(forKey: longBreakIntervalKey) == 0.0 ? defaultLongBreakInterval : UserDefaults.standard.double(forKey: longBreakIntervalKey)
+        return UserDefaults.standard.double(forKey: UserPreferences.longBreakIntervalKey) == 0.0 ? defaultLongBreakInterval : UserDefaults.standard.double(forKey: UserPreferences.longBreakIntervalKey)
     }
     
     func markOnboardingFinished() {

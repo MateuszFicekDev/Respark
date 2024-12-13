@@ -10,23 +10,20 @@ import Foundation
 class CycleManager: ObservableObject {
     @Published var currentPhase: CyclePhase = .work // Work or break phase
 
-    @Published var workDuration: Int // in seconds
-    @Published var shortBreakDuration: Int // in seconds
-    @Published var longBreakDuration: Int // in seconds
-    @Published var cyclesBeforeLongBreak: Int
+    @Published var workDuration: Int = UserPreferences.shared.getWorkDuration() * 60
+    @Published var shortBreakDuration: Int = UserPreferences.shared.getShortBreakDuration() * 60
+    @Published var longBreakDuration: Int = UserPreferences.shared.getLongBreakDuration() * 60
+    @Published var cyclesBeforeLongBreak: Int = .init(UserPreferences.shared.getLongBreakInterval())
 
     @Published var currentCycle: Int = 0
     @Published var isWorkSession: Bool = true
-    @Published var timeRemaining: Int
+    @Published var timeRemaining: Int = UserPreferences.shared.getWorkDuration() * 60
     @Published var isLongBreak: Bool = false
 
-    init(workDuration: Int, shortBreakDuration: Int, longBreakDuration: Int, cyclesBeforeLongBreak: Int) {
-        self.workDuration = workDuration
-        self.shortBreakDuration = shortBreakDuration
-        self.longBreakDuration = longBreakDuration
-        self.cyclesBeforeLongBreak = cyclesBeforeLongBreak
-        self.timeRemaining = workDuration
-    }
+    @Published var isRunning: Bool = false
+    private var timer: Timer?
+
+    init() {}
 
     func startNextCycle() {
         if isWorkSession {
@@ -86,6 +83,7 @@ class CycleManager: ObservableObject {
     }
 
     func resetCurrentCycle() {
+        stopTimer()
         if currentPhase == .work {
             timeRemaining = workDuration
         } else if currentPhase == .shortBreak {
@@ -101,6 +99,26 @@ class CycleManager: ObservableObject {
         } else {
             currentPhase = .work
         }
+    }
+
+    func updateTimes() {
+        workDuration = UserPreferences.shared.getWorkDuration() * 60
+        shortBreakDuration = UserPreferences.shared.getShortBreakDuration() * 60
+        longBreakDuration = UserPreferences.shared.getLongBreakDuration() * 60
+        timeRemaining = workDuration
+        resetCurrentCycle()
+    }
+
+    func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
+            self.decrementTime()
+        }
+    }
+
+    func stopTimer() {
+        isRunning = false
+        timer?.invalidate()
+        timer = nil
     }
 }
 
