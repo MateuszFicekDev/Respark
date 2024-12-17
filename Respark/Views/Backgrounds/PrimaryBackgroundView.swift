@@ -14,8 +14,8 @@ struct PrimaryBackgroundView: View {
 
             ZStack {
                 Color.primaryBlue
-                VStack {
-                    Spacer()
+                VStack(alignment: .trailing) {
+                    if !(progressAmount == 0) { Spacer() }
                     Color.primaryOrange
                         .frame(height: geometry.size.height * (1 - progressAmount))
                 }

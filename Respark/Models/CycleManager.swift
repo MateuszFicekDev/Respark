@@ -5,6 +5,7 @@
 //  Created by Mateusz Ficek on 29/11/2024.
 //
 
+import AVFoundation
 import Foundation
 
 class CycleManager: ObservableObject {
@@ -21,7 +22,10 @@ class CycleManager: ObservableObject {
     @Published var isLongBreak: Bool = false
 
     @Published var isRunning: Bool = false
+    @Published var remainingCyclePercentage: CGFloat = 1.0
     private var timer: Timer?
+    private var startCyclesAutomatically: Bool = UserPreferences.shared.getStartStagesAutomatically()
+    private var player: AVAudioPlayer?
 
     init() {}
 
@@ -56,8 +60,15 @@ class CycleManager: ObservableObject {
     func decrementTime() {
         if timeRemaining > 0 {
             timeRemaining -= 1
+            setRemainingCyclePercentage()
         } else {
+            if timeRemaining == 0 { playSound() }
             startNextCycle()
+
+            if !startCyclesAutomatically {
+                stopTimer()
+                isRunning = false
+            }
         }
     }
 
@@ -70,12 +81,13 @@ class CycleManager: ObservableObject {
         }
     }
 
-    func getRemainingCyclePercentage() -> CGFloat {
+    func setRemainingCyclePercentage() {
         if currentPhase == .work {
-            return CGFloat(Float(timeRemaining) / Float(getCurrentCycleTime()))
+            remainingCyclePercentage = CGFloat(Float(timeRemaining) / Float(getCurrentCycleTime()))
+            return
         }
 
-        return 1 - CGFloat(Float(timeRemaining) / Float(getCurrentCycleTime()))
+        remainingCyclePercentage = 1 - CGFloat(Float(timeRemaining) / Float(getCurrentCycleTime()))
     }
 
     func getCurrentCycleTime() -> Int {
@@ -110,6 +122,9 @@ class CycleManager: ObservableObject {
     }
 
     func startTimer() {
+        if timeRemaining == 0 {
+            startNextCycle()
+        }
         timer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { _ in
             self.decrementTime()
         }
@@ -119,6 +134,19 @@ class CycleManager: ObservableObject {
         isRunning = false
         timer?.invalidate()
         timer = nil
+    }
+
+    func playSound() {
+        guard let soundURL = Bundle.main.url(forResource: "chime", withExtension: "wav") else {
+            return
+        }
+
+        do {
+            player = try AVAudioPlayer(contentsOf: soundURL)
+        } catch {
+            print("Failed to load the sound: \(error)")
+        }
+        player?.play()
     }
 }
 

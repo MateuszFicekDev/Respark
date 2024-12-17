@@ -19,7 +19,7 @@ struct CounterView: View {
             VStack {
                 HStack {
                     MenuButtonView(icon: "line.3.horizontal", width: 30, height: 16, action: {
-                        withAnimation(.easeOut(duration: 1/2)) {
+                        withAnimation(.easeOut(duration: 1 / 2)) {
                             tab = .settings
                         }
                     })
@@ -55,7 +55,7 @@ struct CounterView: View {
                         cycleManager.resetCurrentCycle()
                     })
                 }
-            }.onChange(of: cycleManager.getRemainingCyclePercentage()) { newProgress, _ in
+            }.onChange(of: cycleManager.remainingCyclePercentage) { _, newProgress in
                 withAnimation(.linear(duration: 1)) {
                     progressAmount = newProgress
                 }
